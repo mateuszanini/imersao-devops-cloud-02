@@ -23,16 +23,19 @@ jobs:
         file: ./kube-news/src/Dockerfile
         push: true
         tags: |
-          mateuszanini/kube-news:${{ github.run_number }}
+          mateuszanini/kube-news:v${{ github.run_number }}
           mateuszanini/kube-news:latest
   CD:
     runs-on: ubuntu-latest
     needs: [CI]
     steps:
-    - name: Autenticar na AWS
-      run: echo "Autenticar na AWS"
-    - name: Configurar o KubeConfig
-      run: echo "Configurar o KubeConfig"
-    - name: Aplicar o deploy
-      run: echo "Aplicar o deploy"
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
       
